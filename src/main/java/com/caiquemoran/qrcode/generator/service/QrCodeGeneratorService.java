@@ -6,7 +6,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QrCodeWriter;
+import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -23,9 +23,9 @@ public class QrCodeGeneratorService {
         this.storage = storage;
     }
 
-    public QrCodeGeneratorResponse generateAndUploadQrCode(String text) throws WriterException {
+    public QrCodeGeneratorResponse generateAndUploadQrCode(String text) throws WriterException, IOException {
 
-        QrCodeWriter qrCodeWriter = new QrCodeWriter();
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, 200, 200);
         
         ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
@@ -33,8 +33,8 @@ public class QrCodeGeneratorService {
         
         byte[] pngQrCodeData = pngOutputStream.toByteArray();
 
-
-        String url = storage.uploadFile(pngQrCodeData, UUID.randomUUID().toString(), "image/png");
+        String fileName = UUID.randomUUID().toString() + ".png";
+        String url = storage.uploadFile(pngQrCodeData, fileName, "image/png");
         
         return new QrCodeGeneratorResponse(url);
 

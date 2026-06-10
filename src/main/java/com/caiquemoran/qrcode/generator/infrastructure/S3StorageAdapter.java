@@ -1,4 +1,4 @@
-package com.caiquemoran.qrcode.generator.infraestructure;
+package com.caiquemoran.qrcode.generator.infrastructure;
 
 import com.caiquemoran.qrcode.generator.ports.StoragePort;
 import io.minio.BucketExistsArgs;
@@ -16,6 +16,7 @@ public class S3StorageAdapter implements StoragePort {
 
     private final MinioClient minioClient;
     private final String bucketName;
+    private final String url;
 
     public S3StorageAdapter(
             @Value("${minio.url:http://localhost:9000}") String url,
@@ -23,6 +24,7 @@ public class S3StorageAdapter implements StoragePort {
             @Value("${minio.secret.key}") String secretKey,
             @Value("${minio.bucket.name:minio}") String bucketName) {
         
+        this.url = url;
         this.minioClient = MinioClient.builder()
                 .endpoint(url)
                 .credentials(accessKey, secretKey)
@@ -50,7 +52,7 @@ public class S3StorageAdapter implements StoragePort {
                             .contentType(contentType)
                             .build()
             );
-            return fileName; 
+            return String.format("%s/%s/%s", this.url, this.bucketName, fileName);
         } catch (Exception e) {
             throw new RuntimeException("Error uploading file to MinIO", e);
         }

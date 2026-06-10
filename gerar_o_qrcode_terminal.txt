@@ -1,0 +1,8 @@
+Se quiser gerar um qrcode basta executar o comando abaixo no terminal:
+
+Invoke-RestMethod -Uri http://localhost:8080/qrcode -Method POST -Headers @{"Content-Type"="application/json"} -Body '{"text": "https://seulinkaqui.com"}'
+
+
+Se quiser gerar um qrcode pela api basta enviar uma requisição POST para http://localhost:8080/qrcode com o body:
+
+{"text": "https://seulinkaqui.com"}
