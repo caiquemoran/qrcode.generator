@@ -19,8 +19,8 @@ public class S3StorageAdapter implements StoragePort {
 
     public S3StorageAdapter(
             @Value("${minio.url:http://localhost:9000}") String url,
-            @Value("${minio.access.key:admin}") String accessKey,
-            @Value("${minio.secret.key:pjqrcode}") String secretKey,
+            @Value("${minio.access.key}") String accessKey,
+            @Value("${minio.secret.key}") String secretKey,
             @Value("${minio.bucket.name:minio}") String bucketName) {
         
         this.minioClient = MinioClient.builder()
